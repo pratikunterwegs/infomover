@@ -1,13 +1,13 @@
 Package: infomover
-Title: What the Package Does (One Line, Title Case)
+Title: Work with the Infomove Simulation
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Pratik",
+           family = "Gupte",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+           email = "p.r.gupte@rug.nl",
+           comment = c(ORCID = "https://orcid.org/0000-0001-5294-7819"))
+Description: Controls and retrieves data from the infomove simulation. Must be run from within the infomove directory.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

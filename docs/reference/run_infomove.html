@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>This is a dummy function — dummy • infomover</title>
+<title>Run the infomove simulation. — run_infomove • infomover</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="This is a dummy function — dummy" />
-<meta property="og:description" content="This is a dummy function" />
+<meta property="og:title" content="Run the infomove simulation. — run_infomove" />
+<meta property="og:description" content="Run the infomove simulation." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -100,29 +100,61 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>This is a dummy function</h1>
+    <h1>Run the infomove simulation.</h1>
     
-    <div class="hidden name"><code>dummy.Rd</code></div>
+    <div class="hidden name"><code>run_infomove.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This is a dummy function</p>
+    <p>Run the infomove simulation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dummy</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>run_infomove</span>(
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"noinfo"</span>,
+  <span class='kw'>phi</span> <span class='kw'>=</span> <span class='fl'>15</span>,
+  <span class='kw'>rho</span> <span class='kw'>=</span> <span class='fl'>0.09</span>,
+  <span class='kw'>gens</span> <span class='kw'>=</span> <span class='st'>"100000"</span>,
+  <span class='kw'>timesteps</span> <span class='kw'>=</span> <span class='fl'>100</span>,
+  <span class='kw'>init_d</span> <span class='kw'>=</span> <span class='fl'>0.99</span>,
+  <span class='kw'>replicates</span> <span class='kw'>=</span> <span class='fl'>10</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>Does nothing.</p></td>
+      <th>type</th>
+      <td><p>The simulation type. Currently "info" or "noinfo".</p></td>
+    </tr>
+    <tr>
+      <th>phi</th>
+      <td><p>Value (vector) of PHI values.</p></td>
+    </tr>
+    <tr>
+      <th>rho</th>
+      <td><p>Value (vector) of RHO values.</p></td>
+    </tr>
+    <tr>
+      <th>gens</th>
+      <td><p>Maximum number of generations.</p></td>
+    </tr>
+    <tr>
+      <th>timesteps</th>
+      <td><p>Timesteps per generation.</p></td>
+    </tr>
+    <tr>
+      <th>init_d</th>
+      <td><p>Initial value of giving up density D.</p></td>
+    </tr>
+    <tr>
+      <th>replicates</th>
+      <td><p>How many replicates to run.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Prints a message</p>
+    <p>Nothing. Runs the infomove simulation.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

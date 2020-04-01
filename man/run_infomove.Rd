@@ -5,6 +5,7 @@
 \title{Run the infomove simulation.}
 \usage{
 run_infomove(
+  type = "noinfo",
   phi = 15,
   rho = 0.09,
   gens = "100000",
@@ -14,6 +15,8 @@ run_infomove(
 )
 }
 \arguments{
+\item{type}{The simulation type. Currently "info" or "noinfo".}
+
 \item{phi}{Value (vector) of PHI values.}
 
 \item{rho}{Value (vector) of RHO values.}

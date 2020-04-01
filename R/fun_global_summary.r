@@ -88,8 +88,7 @@ print_global_summary <- function(data_path = "data"){
   }
   # add to parameter data
   tmp_data <- data
-  tmp_data[,`:=`(filename=NULL,
-                 summary_data = agent_summary)]
+  tmp_data[,`:=`(summary_data = agent_summary)]
 
   # unlist the list column
   tmp_data <- tmp_data[, unlist(summary_data, recursive = FALSE),

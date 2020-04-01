@@ -1,5 +1,6 @@
 #' Run the infomove simulation.
 #'
+#' @param type The simulation type. Currently "info" or "noinfo".
 #' @param phi Value (vector) of PHI values.
 #' @param rho Value (vector) of RHO values.
 #' @param gens Maximum number of generations.
@@ -9,7 +10,8 @@
 #'
 #' @return Nothing. Runs the infomove simulation.
 #' @export
-run_infomove <- function(phi = 15,
+run_infomove <- function(type = "noinfo",
+             phi = 15,
              rho = 0.09,
              gens = "100000",
              timesteps = 100,
@@ -17,25 +19,25 @@ run_infomove <- function(phi = 15,
              replicates = 10){
   # check all params are okay
   {
-    assertthat::assert_that(all(c(phi, rho, gens, timesteps, init_d, replicates) > 0),
+    assertthat::assert_that(all(c(phi, rho, timesteps, init_d, replicates) > 0),
                             msg = "run_infomove: some arguments are negative")
 
   }
   # make crossing
-  sim_params = data.table::CJ(phi, rho, gens, timesteps, init_d, rep=1:replicates)
+  sim_params = data.table::CJ(type, phi, rho, gens, timesteps, init_d, rep=1:replicates)
 
   # make job files and run
   {
     shebang <- readLines("code_analysis/template_job.sh")
-    purrr::pwalk(sim_params, function(phi,rho,gens,timesteps,init_d,replicates){
+    purrr::pwalk(sim_params, function(type, phi,rho,gens,timesteps,init_d,replicates){
       if(!dir.exists("jobs")){
         dir.create("jobs")
       }
       # read basic settings
-      shebang[2] <- glue::glue('#SBATCH --job-name=run_infomove_phi{phi}_rho{rho}_time{timesteps}_init_d{init_d}_rep{rep}')
+      shebang[2] <- glue::glue('#SBATCH --job-name=run_infomove_type{type}_phi{phi}_rho{rho}_time{timesteps}_init_d{init_d}_rep{rep}')
       {
-        command <- glue::glue('./infomove {phi} {rho} {gens} {timesteps} {init_d} {rep}')
-        jobfile <- glue::glue('job_infomove_phi{phi}_rho{rho}_time{timesteps}_init_d{init_d}_rep{rep}.sh')
+        command <- glue::glue('./infomove {type} {phi} {rho} {gens} {timesteps} {init_d} {rep}')
+        jobfile <- glue::glue('job_infomove_type{type}_phi{phi}_rho{rho}_time{timesteps}_init_d{init_d}_rep{rep}.sh')
 
         writeLines(c(shebang, command), con = glue::glue('jobs/{jobfile}'))
 

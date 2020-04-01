@@ -2,4 +2,5 @@
 
 export(dummy)
 export(print_global_summary)
+export(run_infomove)
 import(data.table)

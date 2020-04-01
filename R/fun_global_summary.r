@@ -7,7 +7,7 @@
 #' @export
 #'
 #' @examples
-print_global_summary <- function(data_path = "data/"){
+print_global_summary <- function(data_path = "data"){
   id <- value <- gen <- variable <- summary_data <- NULL
   # asserts for file path
   {
@@ -61,12 +61,41 @@ print_global_summary <- function(data_path = "data/"){
     })
 
     # remove the filename
-    data[,`:=`(filename=NULL,
+    tmp_data <- data
+    tmp_data[,`:=`(filename=NULL,
                summary_data = agent_summary)]
 
     # unlist the list column
-    data <- data[, unlist(summary_data, recursive = FALSE),
-         by = setdiff(names(data), "summary_data")]
+    tmp_data <- tmp_data[, unlist(summary_data, recursive = FALSE),
+         by = setdiff(names(tmp_data), "summary_data")]
   }
-  return(data)
+  # save summary to file
+  {
+    fwrite(x = tmp_data, file = glue::glue('{data_path}/data_global_summary.csv'))
+  }
+
+  # get proportion data for plots
+  {
+    agent_summary <- purrr::map(agent_data, function(dt){
+      # convert all cols to numeric
+      dt[,names(dt) := lapply(.SD, as.numeric)]
+      dt <- data.table::melt(dt, id.vars = "gen")
+      dt[,round_value := round(value, 1)]
+
+      dt[,.(count = .N),
+         by = .(gen, variable, round_value)]
+    })
+  }
+  # add to parameter data
+  tmp_data <- data
+  tmp_data[,`:=`(filename=NULL,
+                 summary_data = agent_summary)]
+
+  # unlist the list column
+  tmp_data <- tmp_data[, unlist(summary_data, recursive = FALSE),
+                       by = setdiff(names(tmp_data), "summary_data")]
+  # save summary to file
+  {
+    fwrite(x = tmp_data, file = glue::glue('{data_path}/data_global_counts.csv'))
+  }
 }

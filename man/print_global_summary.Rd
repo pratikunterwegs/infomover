@@ -4,7 +4,7 @@
 \alias{print_global_summary}
 \title{Print a global summary.}
 \usage{
-print_global_summary(data_path = "data/")
+print_global_summary(data_path = "data")
 }
 \arguments{
 \item{data_path}{Where to search for data.}

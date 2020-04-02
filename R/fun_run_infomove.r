@@ -34,15 +34,15 @@ run_infomove <- function(type = "noinfo",
         dir.create("jobs")
       }
       # read basic settings
-      shebang[2] <- glue::glue('#SBATCH --job-name=run_infomove_type{type}_phi{phi}_rho{rho}_time{timesteps}_init_d{init_d}_rep{rep}')
+      shebang[2] <- glue::glue('#SBATCH --job-name=run_infomove_type{type}_phi{phi}_rho{rho}_time{timesteps}_init_d{init_d}_rep{replicates}')
       {
-        command <- glue::glue('./infomove {type} {phi} {rho} {gens} {timesteps} {init_d} {rep}')
-        jobfile <- glue::glue('job_infomove_type{type}_phi{phi}_rho{rho}_time{timesteps}_init_d{init_d}_rep{rep}.sh')
+        command <- glue::glue('./infomove {type} {phi} {rho} {gens} {timesteps} {init_d} {replicates}')
+        jobfile <- glue::glue('job_infomove_type{type}_phi{phi}_rho{rho}_time{timesteps}_init_d{init_d}_rep{replicates}.sh')
 
         writeLines(c(shebang, command), con = glue::glue('jobs/{jobfile}'))
 
         # run as job and delete file
-        # system(command = glue::glue('sbatch {jobfile}'))
+        system(command = glue::glue('sbatch jobs/{jobfile}'))
         file.remove(glue::glue('jobs/{jobfile}'))
       }
     })

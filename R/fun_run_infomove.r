@@ -43,7 +43,7 @@ run_infomove <- function(type = "noinfo",
 
         # run as job and delete file
         system(command = glue::glue('sbatch jobs/{jobfile}'))
-        file.remove(glue::glue('jobs/{jobfile}'))
+        #file.remove(glue::glue('jobs/{jobfile}'))
       }
     })
   }

@@ -60,7 +60,7 @@ print_global_summary <- function(data_path = "data"){
         dt[,id:=NULL]
 
         # convert all cols to numeric
-        dt[,names(dt) := lapply(.SD, as.numeric)]
+        dt <- dt[,lapply(.SD, as.numeric)]
         dt <- data.table::melt(dt, id.vars = "gen")
         dt[,.(mean = mean(value),
               sd = stats::sd(value)),

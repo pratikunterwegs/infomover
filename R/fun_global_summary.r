@@ -84,7 +84,7 @@ print_global_summary <- function(data_path = "data"){
     {
       agent_summary <- purrr::map(agent_data, function(dt){
         # convert all cols to numeric
-        dt[,names(dt) := lapply(.SD, as.numeric)]
+        dt <- dt[,lapply(.SD, as.numeric)]
         dt <- data.table::melt(dt, id.vars = "gen")
         dt[,round_value := round(value, 1)]
 

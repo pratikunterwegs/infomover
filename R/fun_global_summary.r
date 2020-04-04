@@ -35,12 +35,14 @@ print_global_summary <- function(data_path = "data"){
     lookup <- data.table::fread(lookup)
 
     # list the data files
-    data_files <- list.files(path = glue::glue('{fol}/agent_summary'))
+    data_files <- list.files(path = glue::glue('{fol}/agent_summary'),
+                             pattern = ".csv")
 
     # read in lookup and match to data files by filename
     {
       data <- data.table::data.table(filename = data_files)
-      data <- data.table::merge.data.table(data, lookup, by = "filename")
+      data <- data.table::merge.data.table(data, lookup,
+                                           by = "filename")
 
       # check that merging worked by testing col names
       dfnames <- colnames(data)

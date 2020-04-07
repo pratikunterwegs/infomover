@@ -1,13 +1,15 @@
 #' Print a global summary.
 #'
 #' @param data_path Where to search for data.
+#' @param type The type of simulation to search for.
 #'
 #' @return Prints figures and saves data providing a global summary of all data in the data folder.
 #' @import data.table
 #' @export
 #'
 #' @examples
-print_global_summary <- function(data_path = "data"){
+print_global_summary <- function(data_path = "data",
+                                 type = "info"){
   id <- value <- round_value <- gen <- variable <- summary_data <- NULL
   # asserts for file path
   {
@@ -19,10 +21,34 @@ print_global_summary <- function(data_path = "data"){
     data_folders <- list.dirs(path = data_path,
                             recursive = F,
                             full.names = TRUE)
+
+    # check if type is not ALL and subset
+    {
+      if(type != "all"){
+        data_folders <- as.character(glue::glue('{data_path}/{type}'))
+      }
+
+      # check that these folders actually exist
+      purrr::walk(data_folders, function(fol){
+        assertthat::assert_that(dir.exists(fol),
+        msg = glue::glue('sim type {stringr::str_remove(fol, "data/")} does not exist'))
+      })
+    }
+
     # check that there is some data
     assertthat::assert_that(length(data_folders) >= 1,
                           msg = "global_summary: no output folders in data path")
   }
+
+  # ignore folders where there is no data
+  {
+    data_folders <- purrr::keep(data_folders, function(fol){
+      n_files <- length(list.files(path = glue::glue('{fol}/agent_summary'),
+                            pattern = ".csv"))
+      return(n_files >= 1)
+    })
+  }
+
   # walk over the type folders
   purrr::walk(data_folders, function(fol){
     # acquire a lookup file
@@ -35,12 +61,14 @@ print_global_summary <- function(data_path = "data"){
     lookup <- data.table::fread(lookup)
 
     # list the data files
-    data_files <- list.files(path = glue::glue('{fol}/agent_summary'))
+    data_files <- list.files(path = glue::glue('{fol}/agent_summary'),
+                             pattern = ".csv")
 
     # read in lookup and match to data files by filename
     {
       data <- data.table::data.table(filename = data_files)
-      data <- data.table::merge.data.table(data, lookup, by = "filename")
+      data <- data.table::merge.data.table(data, lookup,
+                                           by = "filename")
 
       # check that merging worked by testing col names
       dfnames <- colnames(data)
@@ -61,7 +89,7 @@ print_global_summary <- function(data_path = "data"){
 
         # convert all cols to numeric
         dt <- dt[,lapply(.SD, as.numeric)]
-        dt <- data.table::melt(dt, id.vars = "gen")
+        dt <- data.table::melt(dt, id.vars = "gen", variable.name="parameter")
         dt[,.(mean = mean(value),
               sd = stats::sd(value)),
            by = .(gen, variable)]

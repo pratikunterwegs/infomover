@@ -6,11 +6,9 @@
 #' @return Prints figures and saves data providing a global summary of all data in the data folder.
 #' @import data.table
 #' @export
-#'
-#' @examples
 print_global_summary <- function(data_path = "data",
                                  type = "info"){
-  id <- value <- round_value <- gen <- variable <- summary_data <- NULL
+  id <- value <- round_value <- gen <- variable <- parameter <- summary_data <- NULL
   # asserts for file path
   {
     # check the data path is in the current working directory

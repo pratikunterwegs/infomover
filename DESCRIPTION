@@ -1,6 +1,6 @@
 Package: infomover
 Title: Work with the Infomove Simulation
-Version: 0.0.0.9000
+Version: 0.0.1.0100
 Authors@R: 
     person(given = "Pratik",
            family = "Gupte",
@@ -15,5 +15,6 @@ Imports:
   assertthat,
   data.table,
   glue,
-  purrr
+  purrr,
+  ssh
 RoxygenNote: 7.1.0

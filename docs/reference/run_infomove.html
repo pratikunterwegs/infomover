@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infomover</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.100</span>
       </span>
     </div>
 
@@ -110,18 +110,29 @@
     </div>
 
     <pre class="usage"><span class='fu'>run_infomove</span>(
+  <span class='kw'>ssh_con</span> <span class='kw'>=</span> <span class='st'>"some server"</span>,
+  <span class='kw'>password</span> <span class='kw'>=</span> <span class='st'>"some password"</span>,
   <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"noinfo"</span>,
   <span class='kw'>phi</span> <span class='kw'>=</span> <span class='fl'>15</span>,
-  <span class='kw'>rho</span> <span class='kw'>=</span> <span class='fl'>0.09</span>,
+  <span class='kw'>rho</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
   <span class='kw'>gens</span> <span class='kw'>=</span> <span class='st'>"100000"</span>,
   <span class='kw'>timesteps</span> <span class='kw'>=</span> <span class='fl'>100</span>,
-  <span class='kw'>init_d</span> <span class='kw'>=</span> <span class='fl'>0.99</span>,
+  <span class='kw'>init_d</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>leader_choices</span> <span class='kw'>=</span> <span class='fl'>2</span>,
   <span class='kw'>replicates</span> <span class='kw'>=</span> <span class='fl'>10</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>ssh_con</th>
+      <td><p>The ssh address. Typically a p-number at peregrine.hpc.rug.nl</p></td>
+    </tr>
+    <tr>
+      <th>password</th>
+      <td><p>Connection password.</p></td>
+    </tr>
     <tr>
       <th>type</th>
       <td><p>The simulation type. Currently "info" or "noinfo".</p></td>
@@ -144,7 +155,11 @@
     </tr>
     <tr>
       <th>init_d</th>
-      <td><p>Initial value of giving up density D.</p></td>
+      <td><p>Initial Value of aspiration level D.</p></td>
+    </tr>
+    <tr>
+      <th>leader_choices</th>
+      <td><p>How many leaders can be assessed.</p></td>
     </tr>
     <tr>
       <th>replicates</th>

@@ -5,16 +5,23 @@
 \title{Run the infomove simulation.}
 \usage{
 run_infomove(
+  ssh_con = "some server",
+  password = "some password",
   type = "noinfo",
   phi = 15,
-  rho = 0.09,
+  rho = 0.1,
   gens = "100000",
   timesteps = 100,
-  init_d = 0.99,
+  init_d = 1,
+  leader_choices = 2,
   replicates = 10
 )
 }
 \arguments{
+\item{ssh_con}{The ssh address. Typically a p-number at peregrine.hpc.rug.nl}
+
+\item{password}{Connection password.}
+
 \item{type}{The simulation type. Currently "info" or "noinfo".}
 
 \item{phi}{Value (vector) of PHI values.}
@@ -25,7 +32,9 @@ run_infomove(
 
 \item{timesteps}{Timesteps per generation.}
 
-\item{init_d}{Initial value of giving up density D.}
+\item{init_d}{Initial Value of aspiration level D.}
+
+\item{leader_choices}{How many leaders can be assessed.}
 
 \item{replicates}{How many replicates to run.}
 }

@@ -4,12 +4,14 @@
 \alias{print_global_summary}
 \title{Print a global summary.}
 \usage{
-print_global_summary(data_path = "data", type = "info")
+print_global_summary(data_path = "data", type = "info", which_summary = "all")
 }
 \arguments{
 \item{data_path}{Where to search for data.}
 
 \item{type}{The type of simulation to search for.}
+
+\item{which_summary}{Which summary to create. May be "all", "parameter_summary", "parameter_counts", "phenotype_counts".}
 }
 \value{
 Prints figures and saves data providing a global summary of all data in the data folder.

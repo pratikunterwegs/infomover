@@ -15,6 +15,7 @@ Imports:
   assertthat,
   data.table,
   glue,
-  purrr,
+  purrr
+Suggests:
   ssh
 RoxygenNote: 7.1.0

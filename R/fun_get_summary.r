@@ -12,6 +12,8 @@ get_summary <- function(ssh_con = "some server",
     # get data folders
     if(type != "all"){
         data_folders <- as.character(glue::glue('data/{type}'))
+    } else {
+        data_folders <- list.dirs("data", recursive = FALSE)
       }
 
     # check parameters are okay

@@ -137,7 +137,7 @@ print_global_summary <- function(data_path = "data",
       tmp_data[,`:=`(summary_data = tmp_summary)]
 
       # unlist the list column
-      tmp_data <- tmp_data[, unlist(tmp_data, recursive = FALSE),
+      tmp_data <- tmp_data[, unlist(summary_data, recursive = FALSE),
                            by = setdiff(names(tmp_data), "summary_data")]
       # save summary to file
       {
@@ -168,7 +168,7 @@ print_global_summary <- function(data_path = "data",
       tmp_data[, `:=`(summary_data = tmp_summary)]
 
       # unlist list column
-      tmp_data <- tmp_data[, unlist(tmp_data, recursive = FALSE),
+      tmp_data <- tmp_data[, unlist(summary_data, recursive = FALSE),
                            by = setdiff(names(tmp_data), "summary_data")]
       # save summary to file
       {

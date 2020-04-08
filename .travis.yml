@@ -6,9 +6,6 @@ cache: packages
 r_packages:
   - covr
 
-after_success:
-  - Rscript -e 'library(covr); codecov()'
-
 before_install:
   - sudo apt-get update
   - sudo apt-get install -y libssh-dev

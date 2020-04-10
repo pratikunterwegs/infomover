@@ -2,6 +2,7 @@
 
 export(dummy)
 export(get_summary)
+export(make_land)
 export(print_global_summary)
 export(run_infomove)
 import(data.table)

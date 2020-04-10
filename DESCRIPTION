@@ -17,5 +17,6 @@ Imports:
   glue,
   purrr
 Suggests:
-  ssh
+  ssh,
+  scales
 RoxygenNote: 7.1.0

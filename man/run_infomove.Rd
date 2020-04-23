@@ -12,9 +12,9 @@ run_infomove(
   rho = 0.1,
   gens = "100000",
   timesteps = 100,
-  init_d = 1,
+  init_d = 0.5,
   leader_choices = 2,
-  rep_n = 10
+  rep_n = 5
 )
 }
 \arguments{

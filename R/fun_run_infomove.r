@@ -19,9 +19,9 @@ run_infomove <- function(ssh_con = "some server",
                          rho = 0.1,
                          gens = "100000",
                          timesteps = 100,
-                         init_d = 1.0,
+                         init_d = 0.5,
                          leader_choices = 2,
-                         rep_n = 10){
+                         rep_n = 5){
   # check all params are okay
   {
     assertthat::assert_that(all(c(phi, rho, timesteps, init_d, leader_choices,
@@ -48,17 +48,13 @@ run_infomove <- function(ssh_con = "some server",
       }
 
       # read basic settings
-      shebang[2] <- glue::glue('#SBATCH --job-name=run_
-                         infomove_type-{type}_phi{phi}_nlead{leader_choices}_
-                         rep{rep_n}')
+      shebang[2] <- glue::glue('#SBATCH --job-name=run_infomove_type-{type}_phi{phi}_nlead{leader_choices}_rep{rep_n}')
 
       # make command and write to file, then upload file to connection s
       {
-        command <- glue::glue('./infomove {type} {phi} {rho} {gens} {timesteps}
-                        {init_d} {leader_choices} {rep_n}')
+        command <- glue::glue('./infomove {type} {phi} {rho} {gens} {timesteps} {init_d} {leader_choices} {rep_n}')
 
-        jobfile <- glue::glue('job_infomove_type{type}_phi{phi}_
-                        nlead{leader_choices}_rep{rep_n}.sh')
+        jobfile <- glue::glue('job_infomove_type{type}_phi{phi}_nlead{leader_choices}_rep{rep_n}.sh')
 
         writeLines(c(shebang, command), con = glue::glue('jobs/{jobfile}'))
         ssh::scp_upload(s, glue::glue('jobs/{jobfile}'), to = "infomove/jobs/")

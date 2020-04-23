@@ -49,16 +49,16 @@ run_infomove <- function(ssh_con = "some server",
 
       # read basic settings
       shebang[2] <- glue::glue('#SBATCH --job-name=run_
-                         infomove_type-{type}_phi{phi}_nlead{n_lead}_
+                         infomove_type-{type}_phi{phi}_nlead{leader_choices}_
                          rep{replicate}')
 
       # make command and write to file, then upload file to connection s
       {
         command <- glue::glue('./infomove {type} {phi} {rho} {gens} {timesteps}
-                        {init_d} {n_lead} {replicate}')
+                        {init_d} {leader_choices} {replicate}')
 
         jobfile <- glue::glue('job_infomove_type{type}_phi{phi}_
-                        nlead{n_lead}_rep{replicate}.sh')
+                        nlead{leader_choices}_rep{replicate}.sh')
 
         writeLines(c(shebang, command), con = glue::glue('jobs/{jobfile}'))
         ssh::scp_upload(s, glue::glue('jobs/{jobfile}'), to = "infomove/jobs/")

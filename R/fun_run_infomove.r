@@ -8,7 +8,7 @@
 #' @param timesteps Timesteps per generation.
 #' @param init_d Initial Value of aspiration level D.
 #' @param leader_choices How many leaders can be assessed.
-#' @param rep_ids How many rep_ids to run.
+#' @param rep_n How many rep_n to run.
 #'
 #' @return Nothing. Runs the infomove simulation.
 #' @export
@@ -21,11 +21,11 @@ run_infomove <- function(ssh_con = "some server",
                          timesteps = 100,
                          init_d = 1.0,
                          leader_choices = 2,
-                         rep_ids = 10){
+                         rep_n = 10){
   # check all params are okay
   {
     assertthat::assert_that(all(c(phi, rho, timesteps, init_d, leader_choices,
-                                  rep_ids) > 0),
+                                  rep_n) > 0),
                             msg = "run_infomove: some arguments are negative")
   }
   # check ssh connection
@@ -36,13 +36,13 @@ run_infomove <- function(ssh_con = "some server",
 
   # make crossing
   sim_params = data.table::CJ(type, phi, rho, gens, timesteps,
-                              init_d, leader_choices, rep=1:rep_ids)
+                              init_d, leader_choices, rep=1:rep_n)
 
   # make job files and run
   {
     shebang <- readLines("code_analysis/template_job.sh")
     purrr::pwalk(sim_params, function(type, phi,rho,gens,timesteps,
-                                      init_d,leader_choices,rep_ids){
+                                      init_d,leader_choices,rep_n){
       if(!dir.exists("jobs")){
         dir.create("jobs")
       }
@@ -50,15 +50,15 @@ run_infomove <- function(ssh_con = "some server",
       # read basic settings
       shebang[2] <- glue::glue('#SBATCH --job-name=run_
                          infomove_type-{type}_phi{phi}_nlead{leader_choices}_
-                         rep{rep_id}')
+                         rep{rep_n}')
 
       # make command and write to file, then upload file to connection s
       {
         command <- glue::glue('./infomove {type} {phi} {rho} {gens} {timesteps}
-                        {init_d} {leader_choices} {rep_id}')
+                        {init_d} {leader_choices} {rep_n}')
 
         jobfile <- glue::glue('job_infomove_type{type}_phi{phi}_
-                        nlead{leader_choices}_rep{rep_id}.sh')
+                        nlead{leader_choices}_rep{rep_n}.sh')
 
         writeLines(c(shebang, command), con = glue::glue('jobs/{jobfile}'))
         ssh::scp_upload(s, glue::glue('jobs/{jobfile}'), to = "infomove/jobs/")

@@ -14,7 +14,7 @@ run_infomove(
   timesteps = 100,
   init_d = 1,
   leader_choices = 2,
-  replicates = 10
+  rep_ids = 10
 )
 }
 \arguments{
@@ -36,7 +36,7 @@ run_infomove(
 
 \item{leader_choices}{How many leaders can be assessed.}
 
-\item{replicates}{How many replicates to run.}
+\item{rep_ids}{How many rep_ids to run.}
 }
 \value{
 Nothing. Runs the infomove simulation.

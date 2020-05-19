@@ -22,6 +22,8 @@ clear_infomove_data <- function(ssh_con = "some server",
   }
 
   ssh::ssh_disconnect(s)
+
+  message("infomove data cleared from Peregrine")
 }
 
 # ends here

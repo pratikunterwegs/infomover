@@ -1,0 +1,27 @@
+
+#' Clear simulation data.
+#'
+#' @param ssh_con Peregrine account to which to connect.
+#' @param password Peregrine password.
+#'
+#' @return Checks out the infomove branch.
+#' @export
+#'
+clear_infomove_data <- function(ssh_con = "some server",
+                         password = "some password"){
+  # ssh checks the connection already
+  {
+    s <- ssh::ssh_connect(ssh_con, passwd = password)
+  }
+
+  # run git pull in infomove after cleaning the builds
+  # and also remove job files and output files
+  {
+    ssh_exec_wait(s, c("cd infomove/data",
+                       'find . -name "*.csv" -type f -delete'))
+  }
+
+  ssh::ssh_disconnect(s)
+}
+
+# ends here

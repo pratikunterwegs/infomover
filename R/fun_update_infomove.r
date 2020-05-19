@@ -18,9 +18,6 @@ update_infomove <- function(ssh_con = "some server",
     ssh::ssh_exec_wait(s,
                   command = c("cd infomove/",
                               "rm Makefile infomove",
-                              "cd jobs",
-                              "rm *.sh",
-                              "rm *.out",
                               "cd ..",
                               "git pull"))
   }

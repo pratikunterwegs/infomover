@@ -81,7 +81,7 @@ print_fitness_landscape <- function(data_path = "data",
                          required but missing from data'))
       }
       # read the data and summarise
-      agent_data <- purrr::map(glue::glue('{fol}/agent_summary/{data$filename}'),
+      agent_data <- purrr::map(glue::glue('{fol}/fitness_landscape/{data$filename}'),
                                data.table::fread)
       # rename replicate to flr to avoid issues with the overall sim rep
       purrr::walk(agent_data, function(df){

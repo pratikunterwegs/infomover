@@ -2,18 +2,18 @@
 #'
 #' @param data_path Where to search for data. Must be run in the infomove folder on the cluster.
 #' @param type The type of simulation to search for.
-#' 
+#'
 #' @return Prints figures and saves data providing a global summary of all data in the data folder.
 #' @import data.table
 #' @export
 print_fitness_landscape <- function(data_path = "data",
-                                 type = "info"){
-  
+                                    type = "info"){
+
   # asserts for file path
   {
     # check the data path is in the current working directory
     assertthat::assert_that(assertthat::is.dir(data_path),
-    msg = glue::glue('fitness_landscape: {data_path} not found in wd: {getwd()}'))
+                            msg = glue::glue('fitness_landscape: {data_path} not found in wd: {getwd()}'))
 
     # list agent data folders
     data_folders <- list.dirs(path = data_path,
@@ -29,14 +29,14 @@ print_fitness_landscape <- function(data_path = "data",
       # check that these folders actually exist
       purrr::walk(data_folders, function(fol){
         assertthat::assert_that(dir.exists(fol),
-        msg = glue::glue('sim type {stringr::str_remove(fol, "data/")}
+                                msg = glue::glue('sim type {stringr::str_remove(fol, "data/")}
                          does not exist'))
       })
     }
 
     # check that there is some data
     assertthat::assert_that(length(data_folders) >= 1,
-    msg = "fitness_landscape: no output folders in data path")
+                            msg = "fitness_landscape: no output folders in data path")
   }
 
   # ignore folders where there is no data
@@ -44,9 +44,9 @@ print_fitness_landscape <- function(data_path = "data",
     data_folders <- purrr::keep(data_folders, function(fol){
       n_files <- length(list.files(path = glue::glue('{fol}/fitness_landscape'),
                                    pattern = ".csv"))
-        if(n_files < 1){
-            warning(glue::glue('no fitness landscape in {fol}'))
-        }                                   
+      if(n_files < 1){
+        warning(glue::glue('no fitness landscape in {fol}'))
+      }
       return(n_files >= 1)
     })
   }
@@ -60,7 +60,7 @@ print_fitness_landscape <- function(data_path = "data",
                          full.names = TRUE)
     # check that there is some data
     assertthat::assert_that(length(lookup) == 1,
-            msg = "global_summary: no or multiple lookups found")
+                            msg = "global_summary: no or multiple lookups found")
     lookup <- data.table::fread(lookup)
     # list the data files
     data_files <- list.files(path = glue::glue('{fol}/fitness_landscape'),
@@ -85,19 +85,33 @@ print_fitness_landscape <- function(data_path = "data",
                                data.table::fread)
       # rename replicate to flr to avoid issues with the overall sim rep
       purrr::walk(agent_data, function(df){
-        setnames(df, old = "replicate", new = "flr")
+        data.table::setnames(df, old = "replicate", new = "flr")
       })
 
     }
 
     # map over the fitness landscape data and select the distincts
     distinct_fl_data <- purrr::map(agent_data, function(df){
+      df[,n_count := .N, by = .(flr, a, b)]
       df <-  unique(df, by = c("flr", "a", "b"))
     })
-    distinct_fl_data <- data.table::rbindlist(distinct_fl_data)
+
+    # add to parameter data
+    tmp_data <- data
+    tmp_data[,`:=`(fitness_data = distinct_fl_data)]
+
+    # unlist the list column
+    tmp_data <- tmp_data[, unlist(fitness_data, recursive = FALSE),
+                         by = setdiff(names(tmp_data), "fitness_data")]
+
+    # centre the data on the resident strategy
+    tmp_data[, `:=`(a = a - a[n_count == max(n_count)],
+                    b = b - b[n_count == max(n_count)],
+                    energy = scales::rescale(energy - energy[n_count == max(n_count)])),
+             by = .(filename, rep, flr)]
 
     # save to file
-    data.table::fwrite(x = distinct_fl_data,
-                      file = glue::glue('{fol}/data_fitness_landscape.csv'))
+    data.table::fwrite(x = tmp_data,
+                       file = glue::glue('{fol}/data_fitness_landscape.csv'))
   })
-                                 }
+}

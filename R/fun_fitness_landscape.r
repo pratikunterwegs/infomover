@@ -91,7 +91,9 @@ print_fitness_landscape <- function(data_path = "data",
     }
 
     # map over the fitness landscape data and select the distincts
-    distinct_fl_data <- purrr::map(agent_data, unique, by = c("a", "b", "flr"))
+    distinct_fl_data <- purrr::map(agent_data, function(df){
+      df <-  unique(df, by = c("flr", "a", "b"))
+    })
     distinct_fl_data <- data.table::rbindlist(distinct_fl_data)
 
     # save to file

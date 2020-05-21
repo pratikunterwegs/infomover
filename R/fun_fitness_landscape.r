@@ -107,8 +107,7 @@ print_fitness_landscape <- function(data_path = "data",
     # centre the data on the resident strategy
     tmp_data[, `:=`(a = round(a - a[n_count == max(n_count)], 1),
                     b = round(b - b[n_count == max(n_count)], 1),
-                    energy = scales::rescale(energy - energy[n_count == max(n_count)]),
-                                              to = c(-1, 1)),
+                    energy = energy - energy[n_count == max(n_count)]),
              by = .(filename, flr)]
 
     # save to file

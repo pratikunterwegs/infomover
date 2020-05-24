@@ -35,14 +35,14 @@ run_infomove_fl <- function(type = "noinfo",
 
   # assuming the right branch, print commands to a shell script
   sim_commands <- glue::glue_data(sim_params,
-                  '../infomove {type} {phi} {rho} {timesteps} {a_res} \\
+                  './infomove {type} {phi} {rho} {timesteps} {a_res} \\
                   {b_res} {leader_choices} {gradient} {n_rep}')
 
   # write to a shell script after clearing the old one
   if(file.exists("jobs/infomove_fitness_landscapes.sh")){
     file.remove("jobs/infomove_fitness_landscapes.sh")
   }
-  writeLines(text = sim_commands,
+  writeLines(text = c(sim_commands),
              con = "jobs/infomove_fitness_landscapes.sh")
 
   # convert to executable
@@ -52,6 +52,6 @@ run_infomove_fl <- function(type = "noinfo",
   message("written sim shell commands to file")
 
   # now run the function
-  system("./jobs/infomove_fitness_landscapes.sh")
+  system(command = "./jobs/infomove_fitness_landscapes.sh")
 
 }

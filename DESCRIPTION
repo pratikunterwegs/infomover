@@ -15,7 +15,8 @@ Imports:
   assertthat,
   data.table,
   glue,
-  purrr
+  purrr,
+  stringr
 Suggests:
   ssh,
   scales

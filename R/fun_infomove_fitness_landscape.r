@@ -35,7 +35,7 @@ run_infomove_fl <- function(type = "noinfo",
 
   # assuming the right branch, print commands to a shell script
   sim_commands <- glue::glue_data(sim_params,
-                  'infomove {type} {phi} {rho} {timesteps} {a_res} \\
+                  '../infomove {type} {phi} {rho} {timesteps} {a_res} \\
                   {b_res} {leader_choices} {gradient} {n_rep}')
 
   # write to a shell script after clearing the old one

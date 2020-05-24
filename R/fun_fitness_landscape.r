@@ -106,9 +106,7 @@ print_fitness_landscape <- function(data_path = "data",
                          by = setdiff(names(tmp_data), "fitness_data")]
 
     # centre the data on the resident strategy
-    tmp_data[, `:=`(a = round(a - a[n_count == max(n_count)], 1),
-                    b = round(b - b[n_count == max(n_count)], 1),
-                    energy = energy - energy[n_count == max(n_count)]),
+    tmp_data[, `:=`(energy = energy - energy[n_count == max(n_count)]),
              by = .(filename, flr)]
 
     # save to file

@@ -56,7 +56,7 @@ print_fitness_landscape <- function(data_path = "data",
   {
     # acquire a lookup file
     lookup <- list.files(path = fol,
-                         pattern = "lookup",
+                         pattern = "lookup_eco",
                          full.names = TRUE)
     # check that there is some data
     assertthat::assert_that(length(lookup) == 1,
@@ -74,7 +74,7 @@ print_fitness_landscape <- function(data_path = "data",
 
       # check that merging worked by testing col names
       dfnames <- colnames(data)
-      namesReq <- c("phi", "rho", "rep")
+      namesReq <- c("phi", "rho")
       for (i in 1:length(namesReq)) {
         assertthat::assert_that(namesReq[i] %in% dfnames,
                                 msg = glue::glue('global_summary: {namesReq[i]} is
@@ -92,7 +92,7 @@ print_fitness_landscape <- function(data_path = "data",
 
     # map over the fitness landscape data and select the distincts
     distinct_fl_data <- purrr::map(agent_data, function(df){
-      df[,n_count := .N, by = .(flr, a, b)]
+      df[,n_count := .N, by = .(flr, a, b, mut_combo)]
       df <-  unique(df, by = c("flr", "a", "b"))
     })
 

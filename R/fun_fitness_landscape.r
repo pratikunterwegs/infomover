@@ -8,7 +8,8 @@
 #' @export
 print_fitness_landscape <- function(data_path = "data",
                                     type = "info"){
-
+  n_count <- flr <- a <- b <- mut_combo <- fitness_data <- NULL
+  energy <- filename <- NULL
   # asserts for file path
   {
     # check the data path is in the current working directory

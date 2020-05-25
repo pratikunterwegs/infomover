@@ -94,7 +94,7 @@ print_fitness_landscape <- function(data_path = "data",
     # map over the fitness landscape data and select the distincts
     distinct_fl_data <- purrr::map(agent_data, function(df){
       df[,n_count := .N, by = .(flr, a, b, mut_combo)]
-      df <-  unique(df, by = c("flr", "a", "b"))
+      df <-  unique(df, by = c("flr", "a", "b", "mut_combo"))
     })
 
     # add to parameter data
@@ -107,7 +107,7 @@ print_fitness_landscape <- function(data_path = "data",
 
     # centre the data on the resident strategy
     tmp_data[, `:=`(energy = energy - energy[n_count == max(n_count)]),
-             by = .(filename, flr)]
+             by = .(filename, flr, mut_combo)]
 
     # save to file
     data.table::fwrite(x = tmp_data,

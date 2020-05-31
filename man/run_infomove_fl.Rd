@@ -37,9 +37,9 @@ run_infomove_fl(
 
 \item{gradient}{The gradient increment by which to shift the parameters.}
 
-\item{n_rep}{How many replicates to run.}
+\item{gradient_m}{The gradient increment for M}
 
-\item{graident_m}{The gradient increment for M}
+\item{n_rep}{How many replicates to run.}
 }
 \value{
 Nothing. Runs the infomove simulation for local fitness landscape.

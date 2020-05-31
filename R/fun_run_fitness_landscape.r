@@ -10,7 +10,7 @@
 #' @param leader_choices How many leaders can be assessed.
 #' @param n_rep How many replicates to run.
 #' @param gradient The gradient increment by which to shift the parameters.
-#' @param graident_m The gradient increment for M
+#' @param gradient_m The gradient increment for M
 #' 
 #' @return Nothing. Runs the infomove simulation for local fitness landscape.
 #' @export
@@ -39,6 +39,13 @@ run_infomove_fl <- function(type = "noinfo",
   assertthat::assert_that(stringr::str_detect(this_branch, "eco"),
                           msg = "this is not the eco branch!")
 
+  # prepare for sim
+  sim_prep <- glue::glue('ml unload GCC/6.4.0-2.28 \\
+                          module load GCC/8.3.0 \\
+                          module load GSL/2.6-GCC-8.3.0 \\
+                          module load R/3.6.1-foss-2018a \\
+                          ml list')
+
   # assuming the right branch, print commands to a shell script
   sim_commands <- glue::glue_data(sim_params,
                   './infomove {type} {phi} {rho} {timesteps} {a_res} \\
@@ -48,7 +55,7 @@ run_infomove_fl <- function(type = "noinfo",
   if(file.exists("jobs/infomove_fitness_landscapes.sh")){
     file.remove("jobs/infomove_fitness_landscapes.sh")
   }
-  writeLines(text = c(sim_commands),
+  writeLines(text = c(sim_prep, sim_commands),
              con = "jobs/infomove_fitness_landscapes.sh")
 
   # convert to executable

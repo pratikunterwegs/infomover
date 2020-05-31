@@ -40,10 +40,9 @@ run_infomove_fl <- function(type = "noinfo",
                           msg = "this is not the eco branch!")
 
   # prepare for sim
-  sim_prep <- glue::glue('ml unload GCC/6.4.0-2.28 
+  sim_prep <- glue::glue('module load R/3.6.1-foss-2018a
                           module load GCC/8.3.0 
                           module load GSL/2.6-GCC-8.3.0 
-                          module load R/3.6.1-foss-2018a 
                           ml list')
 
   # assuming the right branch, print commands to a shell script

@@ -40,10 +40,12 @@ run_infomove_fl <- function(type = "noinfo",
                           msg = "this is not the eco branch!")
 
   # prepare for sim
-  sim_prep <- glue::glue('module load R/3.6.1-foss-2018a
-                          module load GCC/8.3.0 
+  sim_prep <- glue::glue('module load GCC/8.3.0 
                           module load GSL/2.6-GCC-8.3.0 
-                          ml list')
+                          ml list
+                          qmake infomove.pro
+                          make clean -j4
+                          make -j4')
 
   # assuming the right branch, print commands to a shell script
   sim_commands <- glue::glue_data(sim_params,

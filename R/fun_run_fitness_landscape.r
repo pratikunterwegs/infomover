@@ -6,10 +6,12 @@
 #' @param timesteps Timesteps per generation.
 #' @param a_res The resident a strategy.
 #' @param b_res The resident b strategy.
+#' @param M_res The resident M strategy.
 #' @param leader_choices How many leaders can be assessed.
 #' @param n_rep How many replicates to run.
 #' @param gradient The gradient increment by which to shift the parameters.
-#'
+#' @param graident_m The gradient increment for M
+#' 
 #' @return Nothing. Runs the infomove simulation for local fitness landscape.
 #' @export
 
@@ -19,12 +21,16 @@ run_infomove_fl <- function(type = "noinfo",
                             timesteps = 500,
                             a_res = 1.0,
                             b_res = 1.0,
+                            M_res = 2,
                             leader_choices = c(1,2,5),
                             gradient = 0.5,
+                            gradient_m = 2,
                             n_rep = 10){
   # make crossing of parameters
-  sim_params <- data.table::CJ(type, phi, rho, timesteps, a_res, b_res,
-                              leader_choices, gradient, n_rep)
+  sim_params <- data.table::CJ(type, phi, rho, timesteps, 
+                              a_res, b_res, M_res,
+                              leader_choices, gradient, gradient_m,
+                              n_rep)
 
   # first check the branch is correct
   branches <- system("git branch", intern = TRUE)
@@ -36,7 +42,7 @@ run_infomove_fl <- function(type = "noinfo",
   # assuming the right branch, print commands to a shell script
   sim_commands <- glue::glue_data(sim_params,
                   './infomove {type} {phi} {rho} {timesteps} {a_res} \\
-                  {b_res} {leader_choices} {gradient} {n_rep}')
+                  {b_res} {M_res} {leader_choices} {gradient} {gradient_m} {n_rep}')
 
   # write to a shell script after clearing the old one
   if(file.exists("jobs/infomove_fitness_landscapes.sh")){

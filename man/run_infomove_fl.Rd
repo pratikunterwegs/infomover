@@ -11,8 +11,10 @@ run_infomove_fl(
   timesteps = 500,
   a_res = 1,
   b_res = 1,
+  M_res = 2,
   leader_choices = c(1, 2, 5),
   gradient = 0.5,
+  gradient_m = 2,
   n_rep = 10
 )
 }
@@ -29,11 +31,15 @@ run_infomove_fl(
 
 \item{b_res}{The resident b strategy.}
 
+\item{M_res}{The resident M strategy.}
+
 \item{leader_choices}{How many leaders can be assessed.}
 
 \item{gradient}{The gradient increment by which to shift the parameters.}
 
 \item{n_rep}{How many replicates to run.}
+
+\item{graident_m}{The gradient increment for M}
 }
 \value{
 Nothing. Runs the infomove simulation for local fitness landscape.

@@ -3,10 +3,10 @@
 #' @param data_path Where to search for data. Must be run in the infomove folder on the cluster.
 #' @param type The type of simulation to search for.
 #'
-#' @return Prints figures and saves data providing a global summary of all data in the data folder.
+#' @return Prints the coefficients of a and b to file.
 #' @import data.table
 #' @export
-print_fitness_landscape <- function(data_path = "data",
+get_fl_coefs <- function(data_path = "data",
                                     type = "info"){
   n_count <- flr <- a <- b <- mut_combo <- fitness_data <- NULL
   energy <- filename <- NULL
@@ -85,8 +85,8 @@ print_fitness_landscape <- function(data_path = "data",
       agent_data <- purrr::map(glue::glue('{fol}/fitness_landscape/{data$filename}'),
                                function(df){
                                  df <- data.table::fread(df)
-                                 m <- lm(energy ~ a + b, data = df)
-                                 coef_data <- data.table::data.table(value = coef(m),
+                                 m <- stats::lm(energy ~ a + b, data = df)
+                                 coef_data <- data.table::data.table(value = stats::coef(m),
                                                          param = c("coef_intercept",
                                                                    "coef_a", "coef_b"))
                                  coef_data <- data.table::transpose(coef_data,

@@ -83,34 +83,26 @@ print_fitness_landscape <- function(data_path = "data",
       }
       # read the data and summarise
       agent_data <- purrr::map(glue::glue('{fol}/fitness_landscape/{data$filename}'),
-                               data.table::fread)
-      # rename replicate to flr to avoid issues with the overall sim rep
-      purrr::walk(agent_data, function(df){
-        data.table::setnames(df, old = "replicate", new = "flr")
-      })
-
+                               function(df){
+                                 df <- data.table::fread(df)
+                                 m <- lm(energy ~ a + b, data = df)
+                                 coef_data <- data.table::data.table(value = coef(m),
+                                                         param = c("coef_intercept",
+                                                                   "coef_a", "coef_b"))
+                                 coef_data <- data.table::transpose(coef_data,
+                                                                    make.names = "param")
+                                 return(coef_data)
+                               })
     }
 
-    # map over the fitness landscape data and select the distincts
-    distinct_fl_data <- purrr::map(agent_data, function(df){
-      df[,n_count := .N, by = .(flr, a, b, mut_combo)]
-      df <-  unique(df, by = c("flr", "a", "b", "mut_combo"))
-    })
+    # rbind the list
+    agent_data <- data.table::rbindlist(agent_data)
 
-    # add to parameter data
-    tmp_data <- data
-    tmp_data[,`:=`(fitness_data = distinct_fl_data)]
-
-    # unlist the list column
-    tmp_data <- tmp_data[, unlist(fitness_data, recursive = FALSE),
-                         by = setdiff(names(tmp_data), "fitness_data")]
-
-    # centre the data on the resident strategy
-    tmp_data[, `:=`(energy = energy - energy[n_count == max(n_count)]),
-             by = .(filename, flr, mut_combo)]
+    # add to lookup data
+    data <- cbind(data, agent_data)
 
     # save to file
-    data.table::fwrite(x = tmp_data,
+    data.table::fwrite(x = data,
                        file = glue::glue('{fol}/data_fitness_landscape.csv'))
   })
 }

@@ -56,7 +56,8 @@ run_infomove_fl <- function(type = "noinfo",
   if(file.exists("jobs/infomove_fitness_landscapes.sh")){
     file.remove("jobs/infomove_fitness_landscapes.sh")
   }
-  writeLines(text = c(sim_prep, sim_commands),
+  writeLines(text = c(#sim_prep, 
+                      sim_commands),
              con = "jobs/infomove_fitness_landscapes.sh")
 
   # convert to executable

@@ -42,10 +42,7 @@ run_infomove_fl <- function(type = "noinfo",
   # prepare for sim
   sim_prep <- glue::glue('module load GCC/8.3.0 
                           module load GSL/2.6-GCC-8.3.0 
-                          ml list
-                          qmake infomove.pro
-                          make clean -j4
-                          make -j4')
+                          ml list')
 
   # assuming the right branch, print commands to a shell script
   sim_commands <- glue::glue_data(sim_params,

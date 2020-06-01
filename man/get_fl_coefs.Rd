@@ -4,10 +4,12 @@
 \alias{get_fl_coefs}
 \title{Collect data for the fitness landscape.}
 \usage{
-get_fl_coefs(data_path = "data", type = "info")
+get_fl_coefs(data_path = "data", predictors = c("a", "b"), type = "info")
 }
 \arguments{
 \item{data_path}{Where to search for data. Must be run in the infomove folder on the cluster.}
+
+\item{predictors}{Which parameters to use as predictors in the LM.}
 
 \item{type}{The type of simulation to search for.}
 }

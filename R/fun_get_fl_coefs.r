@@ -2,13 +2,15 @@
 #'
 #' @param data_path Where to search for data. Must be run in the infomove folder on the cluster.
 #' @param type The type of simulation to search for.
+#' @param predictors Which parameters to use as predictors in the LM.
 #'
 #' @return Prints the coefficients of a and b to file.
 #' @import data.table
 #' @export
 get_fl_coefs <- function(data_path = "data",
-                                    type = "info"){
-  n_count <- flr <- a <- b <- mut_combo <- fitness_data <- NULL
+                         predictors = c("a", "b"),
+                         type = "info"){
+  n_count <- flr <- mut_combo <- fitness_data <- NULL
   energy <- filename <- NULL
   # asserts for file path
   {
@@ -81,14 +83,19 @@ get_fl_coefs <- function(data_path = "data",
                                 msg = glue::glue('global_summary: {namesReq[i]} is
                          required but missing from data'))
       }
+
+      # write the formula
+      this_formula <- glue::glue('energy ~ {stringr::str_flatten(predictors, collapse = " + ")}')
+
       # read the data and summarise
       agent_data <- purrr::map(glue::glue('{fol}/fitness_landscape/{data$filename}'),
                                function(df){
                                  df <- data.table::fread(df)
-                                 m <- stats::lm(energy ~ a + b, data = df)
+                                 m <- stats::lm(formula = this_formula,
+                                                data = df)
                                  coef_data <- data.table::data.table(value = stats::coef(m),
                                                          param = c("coef_intercept",
-                                                                   "coef_a", "coef_b"))
+                                                                   as.character(glue::glue('coef_{predictors}'))))
                                  coef_data <- data.table::transpose(coef_data,
                                                                     make.names = "param")
                                  return(coef_data)

@@ -45,7 +45,7 @@ run_infomove_fl <- function(type = "noinfo",
                           ml list')
 
   # assuming the right branch, print commands to a shell script
-  sim_commands <- glue::glue_data(sim_params,
+  sim_commands <- glue::glue_data(sim_prep, sim_params,
                   './infomove {type} {phi} {rho} {timesteps} {a_res} \\
                   {b_res} {M_res} {leader_choices} {gradient} {gradient_m} {n_rep}')
 

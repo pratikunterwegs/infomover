@@ -11,7 +11,7 @@
 #' @param n_rep How many replicates to run.
 #' @param gradient The gradient increment by which to shift the parameters.
 #' @param gradient_m The gradient increment for M
-#' 
+#'
 #' @return Nothing. Runs the infomove simulation for local fitness landscape.
 #' @export
 
@@ -27,7 +27,7 @@ run_infomove_fl <- function(type = "noinfo",
                             gradient_m = 2,
                             n_rep = 10){
   # make crossing of parameters
-  sim_params <- data.table::CJ(type, phi, rho, timesteps, 
+  sim_params <- data.table::CJ(type, phi, rho, timesteps,
                               a_res, b_res, M_res,
                               leader_choices, gradient, gradient_m,
                               n_rep)
@@ -40,12 +40,12 @@ run_infomove_fl <- function(type = "noinfo",
                           msg = "this is not the eco branch!")
 
   # prepare for sim
-  sim_prep <- glue::glue('module load GCC/8.3.0 
-                          module load GSL/2.6-GCC-8.3.0 
+  sim_prep <- glue::glue('module load GCC/8.3.0
+                          module load GSL/2.6-GCC-8.3.0
                           ml list')
 
   # assuming the right branch, print commands to a shell script
-  sim_commands <- glue::glue_data(sim_prep, sim_params,
+  sim_commands <- glue::glue_data(sim_params,
                   './infomove {type} {phi} {rho} {timesteps} {a_res} \\
                   {b_res} {M_res} {leader_choices} {gradient} {gradient_m} {n_rep}')
 
@@ -53,7 +53,7 @@ run_infomove_fl <- function(type = "noinfo",
   if(file.exists("jobs/infomove_fitness_landscapes.sh")){
     file.remove("jobs/infomove_fitness_landscapes.sh")
   }
-  writeLines(text = c(#sim_prep, 
+  writeLines(text = c(sim_prep,
                       sim_commands),
              con = "jobs/infomove_fitness_landscapes.sh")
 

@@ -40,7 +40,8 @@ run_infomove_fl <- function(type = "noinfo",
                           msg = "this is not the eco branch!")
 
   # prepare for sim
-  sim_prep <- glue::glue('module load GCC/8.3.0
+  sim_prep <- glue::glue('ml purge
+                          module load GCC/8.3.0
                           module load GSL/2.6-GCC-8.3.0
                           ml list')
 
